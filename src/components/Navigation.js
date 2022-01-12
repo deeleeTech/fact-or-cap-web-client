@@ -15,7 +15,7 @@ import {
 import { Link } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const pages = ['Home', 'Basketball', 'Football'];
+const pages = ['Home', 'Upcoming', 'Facts'];
 const settings = ['Profile', 'Friends', 'History', 'Logout'];
 
 export default function Navigation(props){
@@ -38,7 +38,7 @@ export default function Navigation(props){
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" sx={{ borderTop: '1px solid black', borderBottom: '1px solid black', backgroundColor: '#619A46' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -92,7 +92,15 @@ export default function Navigation(props){
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            FACT OR CAP
+            <p style={{ fontSize: '20px', fontFamily: "'Fredoka One', cursive" }}>
+                FACT
+            </p>
+            <p style={{ fontSize: '20px' }}>
+                OR
+            </p>
+            <p style={{ fontSize: '20px', fontFamily: "'Anton', sans-serif" }}>
+                CAP
+            </p>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -130,7 +138,7 @@ export default function Navigation(props){
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                    <Link to={`/${setting}`}>{setting}</Link>
                 </MenuItem>
               ))}
             </Menu>

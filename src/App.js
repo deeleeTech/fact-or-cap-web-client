@@ -15,9 +15,13 @@ import {
   Outlet
 } from "react-router-dom";
 import useAuth from './useAuth';
+import UpcomingGames from './ROUTES/UpcomingGames';
+import Profile from './ROUTES/Profile';
+import Friends from './ROUTES/Friends';
+import History from './ROUTES/History';
+import Facts from './ROUTES/Facts';
 import './App.css';
-import Basketball from './ROUTES/Basketball';
-import Football from './ROUTES/Football';
+
 
 
 
@@ -28,8 +32,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Home" element={<Home />} />
-        <Route path="/Basketball" element={<Basketball />} />
-        <Route path="/Football" element={<Football />} />
+        <Route path="/Upcoming" element={<UpcomingGames />} />
+        <Route path="/Profile" element={<Profile />} />
+        <Route path="/Friends" element={<Friends />} />
+        <Route path="/Facts" element={<Facts />} />
+        <Route path="/History" element={<History />} />
         {/* <Route
             path="/episodes"
             element={
