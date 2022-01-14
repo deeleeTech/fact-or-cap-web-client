@@ -1,14 +1,19 @@
 import * as React from "react";
+import {useDispatch, useSelector} from 'react-redux';
+import { log_in, log_out, set_user } from "./__actions/loginActions";
 
 const authContext = React.createContext();
 
 function useAuth() {
   const [authed, setAuthed] = React.useState(false);
+  const dispatch = useDispatch();
 
   return {
     authed,
-    login() {
+    login(loginInfo) {
       return new Promise((res) => {
+        dispatch(log_in());
+        dispatch(set_user(loginInfo));
         setAuthed(true);
         res();
       });

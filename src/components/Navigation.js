@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import {
     AppBar,
     Box,
@@ -12,15 +13,28 @@ import {
     Tooltip,
     MenuItem
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const pages = ['Home', 'Upcoming', 'Facts'];
+const pages = ['Home', 'Upcoming', 'FactsBoard'];
 const settings = ['Profile', 'Friends', 'History', 'Logout'];
 
 export default function Navigation(props){
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const navigate = useNavigate();
+  const loginStatus = useSelector(state=>state.loggedInStatus)
+
+  const customStyles = {
+    'buttonTitleStyle': {
+      fontFamily: "'Fredericka the Great', cursive",
+      color: 'black',
+      textDecoration: 'none',
+      fontSize: '20px',
+      fontWeight: '600'
+    }
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -38,7 +52,7 @@ export default function Navigation(props){
   };
 
   return (
-    <AppBar position="fixed" sx={{ borderTop: '1px solid black', borderBottom: '1px solid black', backgroundColor: '#619A46' }}>
+    <AppBar position="fixed" sx={{ borderTop: '1px solid #619A46', borderBottom: '1px solid #619A46', backgroundColor: '#1E5631' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -81,7 +95,9 @@ export default function Navigation(props){
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Link to={`/${page}`}>{page}</Link>
+                  <Link to={`/${page}`} style={customStyles.buttonTitleStyle}>
+                    {page}
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -90,7 +106,7 @@ export default function Navigation(props){
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            sx={{ flexGrow: 1, textShadow: '1px 1px #619A46', display: { xs: 'flex', md: 'none' } }}
           >
             <p style={{ fontSize: '20px', fontFamily: "'Fredoka One', cursive" }}>
                 FACT
@@ -115,11 +131,15 @@ export default function Navigation(props){
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            {loginStatus ? 
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+            :
+              <button onClick={()=>navigate('/Login')}>sign in</button>
+            }
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -138,7 +158,9 @@ export default function Navigation(props){
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                    <Link to={`/${setting}`}>{setting}</Link>
+                    <Link to={`/${setting}`} style={customStyles.buttonTitleStyle}>
+                    {setting}
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
