@@ -24,7 +24,8 @@ export default function Navigation(props){
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const navigate = useNavigate();
-  const loginStatus = useSelector(state=>state.loggedInStatus)
+  const loginStatus = useSelector(state=>state.loggedInStatus);
+  const loginData = useSelector(state=>state.userInfo);
 
   const customStyles = {
     'buttonTitleStyle': {
@@ -33,6 +34,17 @@ export default function Navigation(props){
       textDecoration: 'none',
       fontSize: '20px',
       fontWeight: '600'
+    },
+    'capCoinsStyle' : {
+      fontFamily: "'Anton', sans-serif" ,
+      color: '#1E5631',
+      textShadow: '0 0 8px #619A46',
+      textDecoration: 'none',
+      fontSize: '20px',
+      fontWeight: '600',
+      backgroundColor: 'white',
+      width: '100%',
+      padding: '5px',
     }
   }
 
@@ -50,6 +62,11 @@ export default function Navigation(props){
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  //ADDS COMMAS
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   return (
     <AppBar position="fixed" sx={{ borderTop: '1px solid #619A46', borderBottom: '1px solid #619A46', backgroundColor: '#1E5631' }}>
@@ -131,10 +148,10 @@ export default function Navigation(props){
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            {loginStatus ? 
+            {loginStatus && loginData ? 
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt={loginData.username} src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
             :
@@ -163,6 +180,11 @@ export default function Navigation(props){
                   </Link>
                 </MenuItem>
               ))}
+                <MenuItem key={"capCoins"} onClick={handleCloseNavMenu}>
+                    <Link to={`/Home`} style={customStyles.capCoinsStyle}>
+                    {loginData.capCoins ? numberWithCommas(loginData.capCoins): null}&#162;
+                  </Link>
+                </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

@@ -7,7 +7,7 @@ import { Alert, Button, TextField } from '@mui/material';
 import Axios from 'axios'
 
 
-export default function Login(props) {
+export default function Signup(props) {
 
     const customStyles = {
         'containerStyle': { 
@@ -45,8 +45,12 @@ export default function Login(props) {
     const { login } = useAuth();
     const { state } = useLocation();
 
-    const [ typedUsername, setTypedUsername ] = useState('')
-    const [ typedPassword, setTypedPassword ] = useState('')
+    const [ typedUsername, setTypedUsername ] = useState('');
+    const [ typedPassword, setTypedPassword ] = useState('');
+    const [ typedConfirmPassword, setTypedConfirmPassword ] = useState('');
+    const [ typedEmail, setTypedEmail ] = useState('');
+    const [ selectedSport, setSelectedSport ] = useState('');
+    const [ selectedTeam, setSelectedTeam ] = useState('');
 
     const handleUsernameChange = (event) => {
         setTypedUsername(event.target.value);
@@ -54,30 +58,36 @@ export default function Login(props) {
     const handlePasswordChange = (event) => {
         setTypedPassword(event.target.value);
     };
+    const handleConfirmPasswordChange = (event) => {
+        setTypedConfirmPassword(event.target.value);
+    };
+    const handleEmailChange = (event) => {
+        setTypedEmail(event.target.value);
+    };
 
     const handleLogin = () => {
-        let config = { //AXIOS CONFIG SETTINGS
-            method: 'get',
-            url: "http://localhost:5000/users/login",
-            headers: { 'Content-Type': 'application/json' },
-            params: {
-              usernameAttempt: typedUsername,
-              passwordAttempt: typedPassword
-            }
-        };
-        Axios( config ).then( res => { // BACKEND REQUEST
-            let serverData = res.data;
-            if(serverData.message == 'successful_login'){
-                login(serverData.loginData).then(() => {
-                    navigate(state?.path || "/Home");
-                });
-            }
-            else{
-                alert(serverData.message)
-            }
-        } ).catch( err => {
-            console.log(err);
-        })
+        // let config = { //AXIOS CONFIG SETTINGS
+        //     method: 'get',
+        //     url: "http://localhost:5000/users/login",
+        //     headers: { 'Content-Type': 'application/json' },
+        //     params: {
+        //       usernameAttempt: typedUsername,
+        //       passwordAttempt: typedPassword
+        //     }
+        // };
+        // Axios( config ).then( res => { // BACKEND REQUEST
+        //     let serverData = res.data;
+        //     if(serverData.message == 'successful_login'){
+        //         login(serverData.loginData).then(() => {
+        //             navigate(state?.path || "/Home");
+        //         });
+        //     }
+        //     else{
+        //         alert(serverData.message)
+        //     }
+        // } ).catch( err => {
+        //     console.log(err);
+        // })
     };
 
     return (
@@ -86,9 +96,9 @@ export default function Login(props) {
             <Grid item xs={10} sx={customStyles.loginStyle}>
                   <Grid container>
                       <Grid item xs={12} sx={customStyles.headerStyle}>
-                            LOGIN
+                            SIGN UP
                       </Grid>
-                      <Grid item xs={12} sx={customStyles.titleStyle}>
+                      <Grid item xs={12} sx={customStyles.titleStyle}> 
                         <TextField
                             fullWidth
                             id="outlined-name"
@@ -99,28 +109,38 @@ export default function Login(props) {
                       </Grid>
                       <Grid item xs={12} sx={customStyles.titleStyle}>
                         <TextField
-                            fullWidth
-                            id="outlined-name"
                             label="Password"
+                            id="outlined-name"
+                            fullWidth
                             value={typedPassword}
                             onChange={handlePasswordChange}
                             />
                       </Grid>
-                      <Grid item xs={8}>
-
+                      <Grid item xs={12} sx={customStyles.titleStyle}>
+                        <TextField
+                            label="Confirm Password"
+                            id="outlined-name"
+                            fullWidth
+                            value={typedConfirmPassword}
+                            onChange={handleConfirmPasswordChange}
+                            />
                       </Grid>
-                      <Grid item xs={4}>
-                            <button sx={{ width: '100%', fontSize: '8px' }}>
-                                Forgot?
-                            </button>
+                      <Grid item xs={12} sx={customStyles.titleStyle}>
+                        <TextField
+                            label="Email"
+                            id="outlined-name"
+                            fullWidth
+                            value={typedEmail}
+                            onChange={handleEmailChange}
+                            />
                       </Grid>
                       <Grid item xs={12} sx={customStyles.titleStyle}>
                           <Button onClick={handleLogin} sx={customStyles.buttonStyle}>
                                 submit
                           </Button>
                           <div style={{ height: '8px', width: '100%' }}></div>
-                          <Button onClick={()=>navigate('/signup')} sx={customStyles.buttonStyle}>
-                                new account?
+                          <Button onClick={()=>navigate('/login')} sx={customStyles.buttonStyle}>
+                                Have Account?
                           </Button>
                       </Grid>
                   </Grid>

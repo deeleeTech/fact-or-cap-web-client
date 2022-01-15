@@ -10,6 +10,7 @@ import History from './ROUTES/History';
 import Facts from './ROUTES/Facts';
 //AUTH ROUTES =====
 import Login from './ROUTES/Login';
+import Signup from './ROUTES/Signup';
 //++++++++++++++++++++++++++++++++++
 import {
   Routes,
@@ -22,6 +23,7 @@ import {
 } from "react-router-dom";
 import useAuth from './useAuth';
 import './App.css';
+
 
 
 
@@ -63,6 +65,7 @@ export default function App() {
               }
             /> */}
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </animated.div>
     </div>
