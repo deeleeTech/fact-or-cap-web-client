@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from './components/Navigation';
-import { useSpring, useTransition, animated } from 'react-spring'
+import { useSpring, useTransition, animated } from 'react-spring';
+import { useDispatch } from 'react-redux';
+import Axios from 'axios'
 //ROUTES++++++++++++++++++++++++++++
 import Home from './ROUTES/Home';
 import UpcomingGames from './ROUTES/UpcomingGames';
@@ -30,6 +32,23 @@ import './App.css';
 
 export default function App() {
   const propsFade = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } }); //SPRING ANIMATION
+
+  useEffect(()=>{
+    let config = { //AXIOS CONFIG SETTINGS
+      method: 'get',
+      url: "http://localhost:5000/teams/allTeams",
+      headers: { 'Content-Type': 'application/json' }
+    };
+    Axios( config ).then( res => { // BACKEND REQUEST
+      let teamData = res.data;
+      let nbaTeams = teamData.NBA;
+      let nflTeams = teamData.NFL;
+      console.log(teamData)
+    }).catch( err => {
+      console.log(err);
+    })
+  },[])
+
   return (
     <div className='App'>
       <animated.div style={propsFade}>

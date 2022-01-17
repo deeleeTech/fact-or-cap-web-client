@@ -49,9 +49,10 @@ export default function Signup(props) {
     const [ typedPassword, setTypedPassword ] = useState('');
     const [ typedConfirmPassword, setTypedConfirmPassword ] = useState('');
     const [ typedEmail, setTypedEmail ] = useState('');
-    const [ selectedSport, setSelectedSport ] = useState('');
-    const [ selectedTeam, setSelectedTeam ] = useState('');
+    // const [ selectedSport, setSelectedSport ] = useState('');
+    // const [ selectedTeam, setSelectedTeam ] = useState('');
 
+    //HANDLES TEXTFIELDS =========================================
     const handleUsernameChange = (event) => {
         setTypedUsername(event.target.value);
     };
@@ -64,6 +65,7 @@ export default function Signup(props) {
     const handleEmailChange = (event) => {
         setTypedEmail(event.target.value);
     };
+    //============================================================
 
     const handleLogin = () => {
         // let config = { //AXIOS CONFIG SETTINGS
@@ -107,6 +109,15 @@ export default function Signup(props) {
                             onChange={handleUsernameChange}
                             />
                       </Grid>
+                      <Grid item xs={12} sx={customStyles.titleStyle}> 
+                        <TextField
+                            fullWidth
+                            id="outlined-name"
+                            label="Email"
+                            value={typedEmail}
+                            onChange={handleEmailChange}
+                            />
+                      </Grid>
                       <Grid item xs={12} sx={customStyles.titleStyle}>
                         <TextField
                             label="Password"
@@ -126,21 +137,12 @@ export default function Signup(props) {
                             />
                       </Grid>
                       <Grid item xs={12} sx={customStyles.titleStyle}>
-                        <TextField
-                            label="Email"
-                            id="outlined-name"
-                            fullWidth
-                            value={typedEmail}
-                            onChange={handleEmailChange}
-                            />
-                      </Grid>
-                      <Grid item xs={12} sx={customStyles.titleStyle}>
                           <Button onClick={handleLogin} sx={customStyles.buttonStyle}>
-                                submit
+                                Sign Up
                           </Button>
                           <div style={{ height: '8px', width: '100%' }}></div>
                           <Button onClick={()=>navigate('/login')} sx={customStyles.buttonStyle}>
-                                Have Account?
+                                Already Have Account?
                           </Button>
                       </Grid>
                   </Grid>
