@@ -85,7 +85,7 @@ export default function Home() {
                     </Grid>
                     <Grid item xs={12} sx={customStyles.buttonContainer}>
                         <Button sx={customStyles.buttonStyle}>
-                            Tonights Games
+                            Today's Games
                         </Button>
                     </Grid>
                 </Grid>
