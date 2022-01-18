@@ -67,29 +67,35 @@ export default function Signup(props) {
     };
     //============================================================
 
-    const handleLogin = () => {
-        // let config = { //AXIOS CONFIG SETTINGS
-        //     method: 'get',
-        //     url: "http://localhost:5000/users/login",
-        //     headers: { 'Content-Type': 'application/json' },
-        //     params: {
-        //       usernameAttempt: typedUsername,
-        //       passwordAttempt: typedPassword
-        //     }
-        // };
-        // Axios( config ).then( res => { // BACKEND REQUEST
-        //     let serverData = res.data;
-        //     if(serverData.message == 'successful_login'){
-        //         login(serverData.loginData).then(() => {
-        //             navigate(state?.path || "/Home");
-        //         });
-        //     }
-        //     else{
-        //         alert(serverData.message)
-        //     }
-        // } ).catch( err => {
-        //     console.log(err);
-        // })
+    const handleSignUp = () => {
+        if(typedPassword != typedConfirmPassword){
+            alert("passwords don't match....")
+        }
+        else{
+            let config = { //AXIOS CONFIG SETTINGS
+                method: 'post',
+                url: "http://localhost:5000/users/signup",
+                headers: { 'Content-Type': 'application/json' },
+                data: {
+                  usernameAttempt: typedUsername,
+                  passwordAttempt: typedPassword,
+                  emailAttempt: typedEmail
+                }
+            };
+            Axios( config ).then( res => { // BACKEND REQUEST
+                let serverData = res.data;
+                if(serverData.message == 'user_exists'){
+                    alert("this username already exists...")
+                }
+                else{
+                    login(serverData.loginData).then(() => {
+                        navigate(state?.path || "/Home");
+                    });
+                }
+            } ).catch( err => {
+                console.log(err);
+            })
+        }
     };
 
     return (
@@ -137,7 +143,7 @@ export default function Signup(props) {
                             />
                       </Grid>
                       <Grid item xs={12} sx={customStyles.titleStyle}>
-                          <Button onClick={handleLogin} sx={customStyles.buttonStyle}>
+                          <Button onClick={handleSignUp} sx={customStyles.buttonStyle}>
                                 Sign Up
                           </Button>
                           <div style={{ height: '8px', width: '100%' }}></div>
