@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 //REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import NBAgame from '../components/NBAgame';
+import NFLgame from '../components/NFLgame';
+import MLBgame from '../components/MLBgame';
 
 export default function UpcomingGames(props) {
 
@@ -41,29 +43,26 @@ export default function UpcomingGames(props) {
         }
     }
 
-    const navigate = useNavigate();
-    const allGames = useSelector(state => state.allNBA);
-    const [ todaysGames, setTodaysGames ] = useState(null);
+    const navigate = useNavigate(); // USED FOR ROUTING
+    const reduxNBA = useSelector(state => state.allNBA);  //REDUX
+    const reduxNFL = useSelector(state => state.allNFL);  //REDUX
+    const allGames = reduxNBA.concat(reduxNFL);
 
+    const [ toggledDate, setToggledDate ] = useState(new Date());  // FILTER DATE
+    const [ toggledButton, setToggledButton ] = useState('NBA');  // FILTER SPORT
 
-    const [ toggledDate, setToggledDate ] = useState(new Date());
-    const [ toggledButton, setToggledButton ] = useState('NBA');
+    
 
-    useEffect(()=>{
-        //filter out todays games
-        
-    },[])
-
-    const filterGamesDate = (gameDate) => {
+    const filterGamesDate = (gameDate) => {  // FILTER FLAG FOR toggledDate
         const gameDateObject = new Date(gameDate);
         const gameMonth = gameDateObject.getMonth();
         const gameDateDay = gameDateObject.getDate();
         const gameYear = gameDateObject.getFullYear();
         if(toggledDate.getDate() == gameDateDay && toggledDate.getMonth() == gameMonth && toggledDate.getFullYear() == gameYear){
-            return true
+            return true // GAMES DATE = =TOGGLED DATE !!!!
         }
         else{
-            return false
+            return false 
         }
     }
 
@@ -108,7 +107,7 @@ export default function UpcomingGames(props) {
                 </Grid>
             </Grid>
             <Grid item xs={12}>
-                <Grid container sx={{ paddingTop: '8px', fontSize: '20px' }}>
+                <Grid container sx={{ paddingTop: '8px', paddingBottom: '8px', fontSize: '20px' }}>
                     <Grid item xs={4} onClick={()=>setToggledButton('NBA')} sx={toggledButton == 'NBA' ? customStyles.toggledButtonStyle : {}}>NBA</Grid>
                     <Grid item xs={4} onClick={()=>setToggledButton('NFL')} sx={toggledButton == 'NFL' ? customStyles.toggledButtonStyle : {}}>NFL</Grid>
                     <Grid item xs={4} onClick={()=>setToggledButton('MLB')} sx={toggledButton == 'MLB' ? customStyles.toggledButtonStyle : {}}>MLB</Grid>
@@ -117,9 +116,21 @@ export default function UpcomingGames(props) {
             <Grid item xs={12}>
                 {allGames ? allGames.map((eachGame)=>{
                     if(filterGamesDate(eachGame.gameStartDate) && filterGamesSport(eachGame.gameID)){
-                        return(
-                            <NBAgame gameObject={eachGame} />
-                        )
+                        if(toggledButton == 'NBA'){
+                            return(
+                                <NBAgame gameObject={eachGame} />
+                            )
+                        }
+                        if(toggledButton == 'NFL'){
+                            return(
+                                <NFLgame gameObject={eachGame} />
+                            )
+                        }
+                        if(toggledButton == 'MLB'){
+                            return(
+                                <MLBgame gameObject={eachGame} />
+                            )
+                        }
                     }
                 }) : null}
             </Grid>

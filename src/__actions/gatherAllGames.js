@@ -4,3 +4,9 @@ export const gather_NBA_games = (allGames) => {
         payload: allGames
     }
 }
+export const gather_NFL_games = (allGames) => {
+    return{
+        type: 'GET_ALL_NFL_GAMES',
+        payload: allGames
+    }
+}

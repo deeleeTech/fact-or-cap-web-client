@@ -4,7 +4,7 @@ import { useSpring, useTransition, animated } from 'react-spring';
 import Axios from 'axios';
 // REDUX >>>>>>>>>>>>>>>>>>>>>>>>>>>
 import { useDispatch } from 'react-redux';
-import { gather_NBA_games } from './__actions/gatherAllGames';
+import { gather_NBA_games, gather_NFL_games } from './__actions/gatherAllGames';
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //ROUTES++++++++++++++++++++++++++++
 import Home from './ROUTES/Home';
@@ -38,6 +38,7 @@ export default function App() {
   const propsFade = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } }); //SPRING ANIMATION
   const dispatch = useDispatch();
 
+  //GETS NBA TEAM GAMES
   useEffect(()=>{
     let config = { //AXIOS CONFIG SETTINGS
       method: 'get',
@@ -47,6 +48,21 @@ export default function App() {
     Axios( config ).then( res => { // BACKEND REQUEST
       let gamesData = res.data.resData;
       dispatch(gather_NBA_games(gamesData))
+    }).catch( err => {
+      console.log(err);
+    })
+  },[])
+
+  //GETS NFL TEAM GAMES
+  useEffect(()=>{
+    let config = { //AXIOS CONFIG SETTINGS
+      method: 'get',
+      url: "http://localhost:5000/games/allNFL", 
+      headers: { 'Content-Type': 'application/json' }
+    };
+    Axios( config ).then( res => { // BACKEND REQUEST
+      let gamesData = res.data.resData;
+      dispatch(gather_NFL_games(gamesData))
     }).catch( err => {
       console.log(err);
     })
