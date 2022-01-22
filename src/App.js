@@ -13,6 +13,7 @@ import Profile from './ROUTES/Profile';
 import Friends from './ROUTES/Friends';
 import History from './ROUTES/History';
 import Facts from './ROUTES/Facts';
+import CreatePost from './ROUTES/CreatePost';
 //AUTH ROUTES =====
 import Login from './ROUTES/Login';
 import Signup from './ROUTES/Signup';
@@ -72,19 +73,19 @@ export default function App() {
               </animated.div>
             } 
           />
-          <Route path="/Upcoming" element={<UpcomingGames />} />
+          <Route path="/Games" element={<UpcomingGames />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/Friends" element={<Friends />} />
           <Route path="/FactsBoard" element={<Facts />} />
           <Route path="/History" element={<History />} />
-          {/* <Route
-              path="/episodes"
+          <Route
+              path="/CreatePost"
               element={
                 <RequireAuth>
-                  <Episodes />
+                  <CreatePost />
                 </RequireAuth>
               }
-            /> */}
+            />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>

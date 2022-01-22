@@ -15,12 +15,29 @@ export default function UpcomingGames(props) {
             fontWeight: '600'
         },
         'headerStyle': {
-            fontSize: '48px',
+            fontSize: '22px',
             textAlign: 'left',
             padding: '10px',
             letterSpacing: '2px',
             textShadow: '1px 1px 1px black',
-            color: 'white'
+            color: 'white',
+            backgroundColor: 'black',
+            textAlign: 'center',
+            fontFamily: 'regular',
+            border: '1px solid white',
+            borderRadius: '3px'
+        },
+        'buttonStyle' : {
+            color: '#1E5631',
+            textShadow: '1px 1px 35px white',
+            fontWeight: '700',
+            height: '100%',
+            width: '100%'
+        },
+        'toggledButtonStyle' : {
+            textShadow: '1px 1p white',
+            border: '4px solid white',
+            backgroundColor: 'rgba(255,255,255,.2)'
         }
     }
 
@@ -29,7 +46,8 @@ export default function UpcomingGames(props) {
     const [ todaysGames, setTodaysGames ] = useState(null);
 
 
-    const [ toggledDate, setToggledDate ] = useState(new Date())
+    const [ toggledDate, setToggledDate ] = useState(new Date());
+    const [ toggledButton, setToggledButton ] = useState('NBA');
 
     useEffect(()=>{
         //filter out todays games
@@ -49,6 +67,16 @@ export default function UpcomingGames(props) {
         }
     }
 
+    const filterGamesSport = (fullGameID) => {  //FILTER FLAG FOR GAME ID TO MATCH WITH toggleButton
+        const sport = fullGameID.slice(0,3);
+        if(sport == toggledButton){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     const handleDateChange = (currentToggledDate, directionFlag) => {
         const currentDate = currentToggledDate;
         const newDate = new Date(currentDate)
@@ -64,24 +92,31 @@ export default function UpcomingGames(props) {
 
     return (
         <Grid sx={customStyles.upcomingContainer}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={customStyles.headerStyle}>
                 <Grid container>
                     <Grid item xs={2}>
-                        <button onClick={()=>handleDateChange(toggledDate, false)}>
+                        <Button onClick={()=>handleDateChange(toggledDate, false)} sx={customStyles.buttonStyle}>
                             back
-                        </button>
+                        </Button>
                     </Grid>
-                    <Grid item xs={8}>{toggledDate.toDateString()}</Grid>
+                    <Grid item xs={8} sx={{ paddingTop: '3px' }}>{toggledDate.toDateString()}</Grid>
                     <Grid item xs={2}>
-                        <button onClick={()=>handleDateChange(toggledDate, true)}>
+                        <Button onClick={()=>handleDateChange(toggledDate, true)} sx={customStyles.buttonStyle}>
                             next
-                        </button>
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12}>
+                <Grid container sx={{ paddingTop: '8px', fontSize: '20px' }}>
+                    <Grid item xs={4} onClick={()=>setToggledButton('NBA')} sx={toggledButton == 'NBA' ? customStyles.toggledButtonStyle : {}}>NBA</Grid>
+                    <Grid item xs={4} onClick={()=>setToggledButton('NFL')} sx={toggledButton == 'NFL' ? customStyles.toggledButtonStyle : {}}>NFL</Grid>
+                    <Grid item xs={4} onClick={()=>setToggledButton('MLB')} sx={toggledButton == 'MLB' ? customStyles.toggledButtonStyle : {}}>MLB</Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
                 {allGames ? allGames.map((eachGame)=>{
-                    if(filterGamesDate(eachGame.gameStartDate)){
+                    if(filterGamesDate(eachGame.gameStartDate) && filterGamesSport(eachGame.gameID)){
                         return(
                             <NBAgame gameObject={eachGame} />
                         )

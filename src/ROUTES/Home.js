@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+//redux
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function Home() {
 
@@ -43,6 +45,7 @@ export default function Home() {
     }
 
     const navigate = useNavigate();
+    const authStatus = useSelector(state=>state.loggedInStatus)
 
     const handleButtonPress = (routePath) => {
         switch(routePath){
@@ -74,13 +77,19 @@ export default function Home() {
             <Grid item xs={12} sx={customStyles.bodyStyle}>
                 <Grid container>
                     <Grid item xs={12} sx={customStyles.buttonContainer}>
-                        <Button onClick={()=>handleButtonPress('Login')} sx={customStyles.buttonStyle}>
-                            Sign IN
-                        </Button>
+                        {authStatus ? 
+                            <Button onClick={()=>handleButtonPress('Login')} sx={customStyles.buttonStyle}>
+                                Sign OUT
+                            </Button>
+                        :
+                            <Button onClick={()=>handleButtonPress('Login')} sx={customStyles.buttonStyle}>
+                                Sign IN
+                            </Button>
+                        }
                     </Grid>
                     <Grid item xs={12} sx={customStyles.buttonContainer}>
                         <Button onClick={()=>handleButtonPress('Factboard')} sx={customStyles.buttonStyle}>
-                            FactBoard
+                            Facts Posted
                         </Button>
                     </Grid>
                     <Grid item xs={12} sx={customStyles.buttonContainer}>
