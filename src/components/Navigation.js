@@ -16,7 +16,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const pages = ['Home', 'Games', 'Fact Posts'];
+const pages = ['Home', 'Games', 'Facts', 'Parlays'];
 const settings = ['Profile', 'Friends', 'History', 'Logout'];
 
 export default function Navigation(props){

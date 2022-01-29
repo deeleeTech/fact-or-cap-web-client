@@ -8,7 +8,7 @@ import NBAgame from '../components/NBAgame';
 import NFLgame from '../components/NFLgame';
 import MLBgame from '../components/MLBgame';
 
-export default function UpcomingGames(props) {
+export default function Games(props) {
 
     const customStyles = {
         'upcomingContainer': {
@@ -44,9 +44,9 @@ export default function UpcomingGames(props) {
     }
 
     const navigate = useNavigate(); // USED FOR ROUTING
-    const reduxNBA = useSelector(state => state.allNBA);  //REDUX
-    const reduxNFL = useSelector(state => state.allNFL);  //REDUX
-    const allGames = reduxNBA.concat(reduxNFL);
+    const reduxNBA = useSelector(state => state.allNBA);  //REDUX ARRAY
+    const reduxNFL = useSelector(state => state.allNFL);  //REDUX ARRAY
+    const allGames = reduxNBA.concat(reduxNFL); // JOINS ARRAYS
 
     const [ toggledDate, setToggledDate ] = useState(new Date());  // FILTER DATE
     const [ toggledButton, setToggledButton ] = useState('NBA');  // FILTER SPORT

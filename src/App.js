@@ -8,7 +8,7 @@ import { gather_NBA_games, gather_NFL_games } from './__actions/gatherAllGames';
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //ROUTES++++++++++++++++++++++++++++
 import Home from './ROUTES/Home';
-import UpcomingGames from './ROUTES/UpcomingGames';
+import Games from './ROUTES/Games';
 import Profile from './ROUTES/Profile';
 import Friends from './ROUTES/Friends';
 import History from './ROUTES/History';
@@ -89,10 +89,10 @@ export default function App() {
               </animated.div>
             } 
           />
-          <Route path="/Games" element={<UpcomingGames />} />
+          <Route path="/Games" element={<Games />} />
+          <Route path="/Facts" element={<Facts />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/Friends" element={<Friends />} />
-          <Route path="/FactsBoard" element={<Facts />} />
           <Route path="/History" element={<History />} />
           <Route
               path="/CreatePost"
