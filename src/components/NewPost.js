@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import { Button } from '@mui/material';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
+import { Select, MenuItem } from '@mui/material';
 
 export default function NewPost(props){
   const customStyles = {
@@ -28,26 +32,121 @@ export default function NewPost(props){
       color: 'white',
       textShadow: '1px 0px black'
     },
+    'winnerStyle' : {
+        textAlign: 'left',
+        fontWeight: '800',
+        letterSpacing: '2px'
+    },
+    'totalStyle' : {
+        padding: '5px',
+        fontSize: '32px',
+        fontWeight: '700'
+    }
   }
   const navigate = useNavigate();
+  const currentUser = useSelector(state=>state.userInfo);
+  const allMenuItems = props.winningOptions;
 
-//   const postInfo = useSelector(state=>state.postData);
-//   const userInfo = useSelector(state=>state.userInfo);
-//   const loggedIn = useSelector(state=>state.loggedInStatus);
+  const [ projectedWinner, setProjectedWinner ] = useState('choose')
+  const [ riskCapCoins, setRiskCapCoins ] = useState('');
+  const [ gainCapCoins, setGainCapCoins ] = useState('');
+  const [ totalWinnings, setTotalWinnings ] = useState(0);
 
 
-//   useEffect(()=>{
-//     if(postInfo == null || loggedIn == false){
-//       navigate('/Upcoming')
-//     }
-//     console.log(postInfo)
-//   },[postInfo])
+  const handleWinnerChange = (event) => { //WINNER SELECTION
+    setProjectedWinner(event.target.value);
+  };
+
+  const handleRiskChange = (event) => { // ON RISK CHANGE
+    if(event.target.value == '') setRiskCapCoins(''); //resets to zero when fully deleted
+    const enteredRisk = parseInt(event.target.value);
+    if(isNaN(enteredRisk) == false){
+        setRiskCapCoins(event.target.value);
+    }
+  };
+
+  const handleGainChange = (event) => { //ON GAIN CHANGE
+    if(event.target.value == '') setGainCapCoins(''); //resets to zero when fully deleted
+    const enteredRisk = parseInt(event.target.value);
+    if(isNaN(enteredRisk) == false){
+        setGainCapCoins(event.target.value);
+    }
+  };
+
+  const handleConfirmAttempt = () => {
+      if(allMenuItems.includes(projectedWinner) == false){
+          alert('Please Select A Valid Winner');
+      }
+      else if(riskCapCoins == '' || gainCapCoins == ''){
+            alert('Please Enter A Valid Risk & Gain');
+      }
+      else if(riskCapCoins > currentUser.capCoins){
+            alert('Not Enough Cap Coins to Risk That');
+      }
+  }
+
+  useEffect(()=>{  //HOOK TO UPDATE TOTAL 
+    let riskStager = 0;
+    let gainStager = 0;
+    if(riskCapCoins != '') riskStager = parseInt(riskCapCoins);
+    if(gainCapCoins != '') gainStager = parseInt(gainCapCoins);
+    setTotalWinnings(riskStager + gainStager);
+  },[riskCapCoins, gainCapCoins])
 
   return (
-      <Grid container sx={{ paddingTop: '10px'}}>
-          <Grid item xs={12} sx={customStyles.container}>
-              new post incoming bois
+      <Grid container sx={customStyles.container}>
+          <Grid item xs={12} sx={customStyles.winnerStyle}> Winner: </Grid>
+          <Grid item xs={12} sx={{ paddingBottom: '10px' }}>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={projectedWinner}
+                label="Projection"
+                onChange={handleWinnerChange}
+                fullWidth
+                sx={{
+                    backgroundColor: 'white'
+                }}
+            >
+                {allMenuItems && allMenuItems.map((eachItem)=>{
+                    return(
+                        <MenuItem value={eachItem}>{eachItem}</MenuItem>
+                    )
+                })}
+            </Select>
           </Grid>
+          <Grid item xs={3}>Risk</Grid>
+          <Grid item xs={1}></Grid>
+          <Grid item xs={3}>Gain</Grid>
+          <Grid item xs={5}>Total Winnings</Grid>
+          <Grid item xs={3}>
+                <OutlinedInput
+                    id="cap-coins-risk"
+                    value={riskCapCoins}
+                    onChange={handleRiskChange}
+                    endAdornment={<InputAdornment position="end">cC</InputAdornment>}
+                    aria-describedby="cap-coins"
+                    sx={{ backgroundColor: 'white' }}
+                />
+          </Grid>
+          <Grid item xs={1} sx={{ paddingTop: '18px', fontSize: '18px' }}> + </Grid>
+          <Grid item xs={3}>
+                <OutlinedInput
+                    id="cap-coins-gain"
+                    value={gainCapCoins}
+                    onChange={handleGainChange}
+                    endAdornment={<InputAdornment position="end">cC</InputAdornment>}
+                    aria-describedby="cap-coins"
+                    sx={{ backgroundColor: 'white' }}
+                />
+          </Grid>
+          <Grid item xs={5} sx={customStyles.totalStyle}>
+              {totalWinnings}
+              <br />
+              <Button onClick={()=>handleConfirmAttempt()}>
+                  confirm
+                </Button>
+            </Grid>
       </Grid>
   )
 }

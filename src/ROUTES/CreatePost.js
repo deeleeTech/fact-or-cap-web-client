@@ -48,20 +48,6 @@ export default function CreatePost(props){
 
   return (
       <Grid container sx={{ paddingTop: '70px'}}>
-          <Grid item xs={6}>
-              {newFlag ? 
-                <Button onClick={()=>setNewFlag(false)} sx={customStyles.backButtonStyle}>CANCEL</Button>
-              :
-                <Button onClick={()=>navigate('/Games')} sx={customStyles.backButtonStyle}>BACK</Button>
-              }
-          </Grid>
-          <Grid item xs={6}>
-              {newFlag ? 
-                <Button onClick={()=>console.log('new fact made')} sx={customStyles.newButtonStyle}>CONFIRM</Button>
-              :
-                <Button onClick={()=>setNewFlag(true)} sx={customStyles.newButtonStyle}>NEW</Button>
-              }
-          </Grid>
           <Grid item xs={12} sx={customStyles.headerContainer}>
              {postInfo.awayTeamName}
              <br />
@@ -69,9 +55,23 @@ export default function CreatePost(props){
              <br />
              {postInfo.homeTeamName}
           </Grid>
+          <Grid item xs={newFlag ? 12 : 6}>
+              {newFlag ? 
+                <Button onClick={()=>setNewFlag(false)} sx={customStyles.backButtonStyle}>CANCEL</Button>
+              :
+                <Button onClick={()=>navigate('/Games')} sx={customStyles.backButtonStyle}>BACK</Button>
+              }
+          </Grid>
+          <Grid item xs={newFlag ? 0 : 6}>
+              {newFlag ? 
+                null
+              :
+                <Button onClick={()=>setNewFlag(true)} sx={customStyles.newButtonStyle}>NEW</Button>
+              }
+          </Grid>
           {newFlag ? 
-            <Grid item xs={12}>
-                <NewPost />
+            <Grid item xs={12} sx={{ paddingTop: '15px' }}>
+                <NewPost winningOptions={[postInfo.awayTeamName, postInfo.homeTeamName]} />
             </Grid>
           : null}
           <Grid item xs={12}>
