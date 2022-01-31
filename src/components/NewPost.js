@@ -7,6 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { Select, MenuItem } from '@mui/material';
+import axios from 'axios';
 
 export default function NewPost(props){
   const customStyles = {
@@ -46,6 +47,7 @@ export default function NewPost(props){
   const navigate = useNavigate();
   const currentUser = useSelector(state=>state.userInfo);
   const allMenuItems = props.winningOptions;
+  const gameInfo = props.gameDetails;
 
   const [ projectedWinner, setProjectedWinner ] = useState('choose')
   const [ riskCapCoins, setRiskCapCoins ] = useState('');
@@ -82,6 +84,33 @@ export default function NewPost(props){
       }
       else if(riskCapCoins > currentUser.capCoins){
             alert('Not Enough Cap Coins to Risk That');
+      }
+      else{
+          const currentSport = (gameInfo.gameID).slice(0,3)
+          let stager = {
+            'gameID': gameInfo.gameID,
+            'gameStart' : gameInfo.gameStartDate,
+            'riskCoins': riskCapCoins,
+            'usernameAccepted': 'none',
+            'wonPost': null,
+            'sport': currentSport,
+            'usernamePosted': currentUser.username,
+            'projectedWinner' : projectedWinner,
+            'gainCoins' : gainCapCoins
+          }
+        //   let config = { //AXIOS CONFIG SETTINGS
+        //     method: 'post',
+        //     url: "http://localhost:5000/bets/newGameBet",
+        //     headers: { 'Content-Type': 'application/json' },
+        //     data: stager
+        // };
+        axios.post('http://localhost:5000/bets/newGameBet', stager)
+          .then(function (response) {
+            //console.log(response.data.message);
+            if(response.data.message == 'created_new_post'){
+                navigate('/Games')
+            }
+          })
       }
   }
 

@@ -71,7 +71,7 @@ export default function CreatePost(props){
           </Grid>
           {newFlag ? 
             <Grid item xs={12} sx={{ paddingTop: '15px' }}>
-                <NewPost winningOptions={[postInfo.awayTeamName, postInfo.homeTeamName]} />
+                <NewPost gameDetails={postInfo} winningOptions={[postInfo.awayTeamName, postInfo.homeTeamName]} />
             </Grid>
           : null}
           <Grid item xs={12}>
