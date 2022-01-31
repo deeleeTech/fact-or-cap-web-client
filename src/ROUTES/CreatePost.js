@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import NewPost from '../components/NewPost';
+import ExistingGameBet from '../components/ExistingGameBet';
 
 export default function CreatePost(props){
   const customStyles = {
@@ -35,6 +36,7 @@ export default function CreatePost(props){
   const postInfo = useSelector(state=>state.postData);
   const userInfo = useSelector(state=>state.userInfo);
   const loggedIn = useSelector(state=>state.loggedInStatus);
+  const allBetsData = useSelector(state=>state.allGameBets)
 
   const [ newFlag, setNewFlag ] = useState(false)
 
@@ -73,12 +75,21 @@ export default function CreatePost(props){
             <Grid item xs={12} sx={{ paddingTop: '15px' }}>
                 <NewPost gameDetails={postInfo} winningOptions={[postInfo.awayTeamName, postInfo.homeTeamName]} />
             </Grid>
-          : null}
-          <Grid item xs={12}>
+          : 
+          <Grid item xs={12} sx={{ paddingTop: '15px' }}>
             <Grid container>
-                
+                {allBetsData.map((eachBet)=>{
+                  if(eachBet.gameID == postInfo.gameID){
+                    return(
+                      <Grid item xs={12}>
+                          <ExistingGameBet betObject={eachBet} />
+                      </Grid>
+                    ) 
+                  }
+                })}
             </Grid>
           </Grid>
+          }
       </Grid>
   )
 }

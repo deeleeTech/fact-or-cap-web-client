@@ -69,7 +69,7 @@ export default function NFLgame(props) {
     const findPostTotal = (gameIDSearch) => {
         let totalStager = 0;
         allBets.map((eachBet)=>{
-            if(eachBet.gameID == gameIDSearch) totalStager = totalStager + 1;
+            if(eachBet.gameID == gameIDSearch && eachBet.usernameAccepted == 'none') totalStager = totalStager + 1;
         })
         return totalStager;
     }
@@ -100,7 +100,7 @@ export default function NFLgame(props) {
 
                     <Grid item xs={12}>
                         <Button onClick={()=>handleGameClick()} sx={customStyles.seePostStyle}>
-                            {findPostTotal(game)} POSTS
+                            {findPostTotal(game)} Open Bet
                         </Button>
                     </Grid>
                 </Grid>
