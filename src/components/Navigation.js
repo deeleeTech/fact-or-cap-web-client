@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+// REDUX --------
+import { useDispatch, useSelector } from 'react-redux';
+import { set_user } from '../__actions/loginActions';
+// ----------------
 import {
     AppBar,
     Box,
@@ -15,6 +18,7 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
+import useAuth from '../useAuth'
 
 const pages = ['Home', 'Games', 'Facts', 'Parlays'];
 const settings = ['Profile', 'Friends', 'History', 'Logout'];
@@ -23,7 +27,9 @@ export default function Navigation(props){
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const loginStatus = useSelector(state=>state.loggedInStatus);
   const loginData = useSelector(state=>state.userInfo);
 
@@ -49,19 +55,58 @@ export default function Navigation(props){
   }
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+    let currentDate = new Date();
+    if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
+      handleLogout(); //LOGOUT
+    }
+    else{ 
+      let stager = loginData;
+      stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
+      dispatch(set_user(stager)); // RESETS REDUX
+      setAnchorElNav(event.currentTarget);
+    }
   };
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    let currentDate = new Date();
+    if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
+      handleLogout();
+    }
+    else{
+      let stager = loginData;
+      stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
+      dispatch(set_user(stager)); // RESETS REDUX
+      setAnchorElUser(event.currentTarget);
+    }
   };
-
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+    let currentDate = new Date();
+    if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
+      handleLogout();
+    }
+    else{
+      let stager = loginData;
+      stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
+      dispatch(set_user(stager)); // RESETS REDUX
+      setAnchorElNav(null);
+    }
+  };
+  const handleCloseUserMenu = () => {
+    let currentDate = new Date();
+    if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
+      handleLogout();
+    }
+    else{
+      let stager = loginData;
+      stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
+      dispatch(set_user(stager)); // RESETS REDUX
+      setAnchorElUser(null);
+    }
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  function handleLogout(){
+    handleCloseUserMenu();
+    logout().then(navigate('/Home'));
+  }
 
   //ADDS COMMAS
   function numberWithCommas(x) {
@@ -175,9 +220,15 @@ export default function Navigation(props){
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                    <Link to={`/${setting}`} style={customStyles.buttonTitleStyle}>
-                    {setting}
-                  </Link>
+                    {setting == 'Logout' ? 
+                      <div onClick={()=>handleLogout()} style={customStyles.buttonTitleStyle}>
+                        {setting}
+                      </div>
+                    :
+                      <Link to={`/${setting}`} style={customStyles.buttonTitleStyle}>
+                        {setting}
+                      </Link>
+                    }
                 </MenuItem>
               ))}
                 <MenuItem key={"capCoins"} onClick={handleCloseNavMenu}>

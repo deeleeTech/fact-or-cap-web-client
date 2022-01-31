@@ -20,6 +20,8 @@ function useAuth() {
     },
     logout() {
       return new Promise((res) => {
+        dispatch(log_out());
+        dispatch(set_user([]));
         setAuthed(false);
         res();
       });

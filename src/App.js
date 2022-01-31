@@ -3,7 +3,7 @@ import Navigation from './components/Navigation';
 import { useSpring, useTransition, animated } from 'react-spring';
 import Axios from 'axios';
 // REDUX >>>>>>>>>>>>>>>>>>>>>>>>>>>
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { gather_NBA_games, gather_NFL_games } from './__actions/gatherAllGames';
 import { gather_game_bets } from './__actions/gatherAllGameBets';
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -38,6 +38,8 @@ import './App.css';
 export default function App() {
   const propsFade = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } }); //SPRING ANIMATION
   const dispatch = useDispatch();
+
+  const postDataReady = useSelector(state=>state.postData);
 
   //GETS NBA TEAM GAMES
   useEffect(()=>{
@@ -100,7 +102,7 @@ export default function App() {
               path="/CreatePost"
               element={
                 <RequireAuth>
-                  <CreatePost />
+                  {postDataReady != null ? <CreatePost /> : <Home />}
                 </RequireAuth>
               }
             />

@@ -84,12 +84,14 @@ export default function Signup(props) {
             };
             Axios( config ).then( res => { // BACKEND REQUEST
                 let serverData = res.data;
+                console.log('Look Here!')
+                console.log(serverData)
                 if(serverData.message == 'user_exists'){
                     alert("this username already exists...")
                 }
                 else{
                     login(serverData.loginData).then(() => {
-                        navigate(state?.path || "/Home");
+                        navigate("/Home");
                     });
                 }
             } ).catch( err => {

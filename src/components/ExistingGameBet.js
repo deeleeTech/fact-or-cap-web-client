@@ -26,8 +26,12 @@ export default function CreatePost(props){
         paddingRight: '4px',
         fontWeight: '700',
         letterSpacing: '2px',
-        fontSize: '24px',
-        paddingBottom : '4px'
+        fontSize: '26px',
+        paddingBottom : '4px',
+        backgroundColor: 'rgba(255,255,255,.2)',
+        border: '1px solid white',
+        borderBottom: 'none',
+        textShadow: '1px 0px 2px black'
     },
     'capCoinsContainer' : {
         padding: '5px',
@@ -62,7 +66,7 @@ export default function CreatePost(props){
   return (
       <Grid container sx={customStyles.container}>
           <Grid item xs={12} sx={customStyles.usernameHeaderStyle}>
-                <b style={{ borderBottom: '3px solid white' }}>{thisBet.usernamePosted}</b> thinks....
+                <b style={{ borderBottom: '4px solid white' }}>{thisBet.usernamePosted}</b> thinks....
           </Grid>
           <Grid item xs={12} sx={customStyles.projectedStyle}>
                 {thisBet.projectedWinner}
