@@ -5,6 +5,7 @@ import Axios from 'axios';
 // REDUX >>>>>>>>>>>>>>>>>>>>>>>>>>>
 import { useDispatch } from 'react-redux';
 import { gather_NBA_games, gather_NFL_games } from './__actions/gatherAllGames';
+import { gather_game_bets } from './__actions/gatherAllGameBets';
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //ROUTES++++++++++++++++++++++++++++
 import Home from './ROUTES/Home';
@@ -52,7 +53,6 @@ export default function App() {
       console.log(err);
     })
   },[])
-
   //GETS NFL TEAM GAMES
   useEffect(()=>{
     let config = { //AXIOS CONFIG SETTINGS
@@ -67,33 +67,35 @@ export default function App() {
       console.log(err);
     })
   },[])
+  //GETS ALL GAME BETS
+  useEffect(()=>{
+    let config = { //AXIOS CONFIG SETTINGS
+      method: 'get',
+      url: "http://localhost:5000/bets/allBets", 
+      headers: { 'Content-Type': 'application/json' }
+    };
+    Axios( config ).then( res => { // BACKEND REQUEST
+      let gameBetsData = res.data.betData;
+      dispatch(gather_game_bets(gameBetsData))
+    }).catch( err => {
+      console.log(err);
+    })
+  },[])
 
   return (
     <div className='App'>
       <animated.div style={propsFade}>
           <Navigation />
         <Routes>
-          <Route
-            path="/"
-            element={
-              <animated.div style={propsFade}>
-                <Home />
-              </animated.div>
-            } 
-          />
-          <Route
-            path="/Home"
-            element={
-              <animated.div style={propsFade}>
-                <Home />
-              </animated.div>
-            } 
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="/Home" element={<Home />} />
           <Route path="/Games" element={<Games />} />
           <Route path="/Facts" element={<Facts />} />
+
           <Route path="/Profile" element={<Profile />} />
           <Route path="/Friends" element={<Friends />} />
           <Route path="/History" element={<History />} />
+
           <Route
               path="/CreatePost"
               element={

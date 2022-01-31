@@ -39,11 +39,11 @@ export default function CreatePost(props){
   const [ newFlag, setNewFlag ] = useState(false)
 
 
-  useEffect(()=>{
+  useEffect(()=>{ //required data check
     if(postInfo == null || loggedIn == false){
       navigate('/Upcoming')
     }
-    console.log(postInfo)
+    //console.log(postInfo)
   },[postInfo])
 
   return (

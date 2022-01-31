@@ -50,7 +50,6 @@ export default function Games(props) {
 
     const [ toggledDate, setToggledDate ] = useState(new Date());  // FILTER DATE
     const [ toggledButton, setToggledButton ] = useState('NBA');  // FILTER SPORT
-
     
 
     const filterGamesDate = (gameDate) => {  // FILTER FLAG FOR toggledDate
@@ -66,7 +65,7 @@ export default function Games(props) {
         }
     }
 
-    const filterGamesSport = (fullGameID) => {  //FILTER FLAG FOR GAME ID TO MATCH WITH toggleButton
+    const filterGamesSport = (fullGameID) => {  //FILTER FLAG FOR GAME ID TO MATCH WITH toggleButton AKA Sport
         const sport = fullGameID.slice(0,3);
         if(sport == toggledButton){
             return true;

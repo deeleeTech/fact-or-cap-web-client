@@ -50,6 +50,8 @@ export default function NFLgame(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const allBets = useSelector(state=>state.allGameBets)
+
     //mongo object ------------------
     const game = props.gameObject.gameID;
     const hmTeam = props.gameObject.homeTeamName;
@@ -63,7 +65,14 @@ export default function NFLgame(props) {
         const postDataStager = props.gameObject;
         dispatch(gather_post_data(postDataStager)).then(navigate('/CreatePost'))
     }
-
+    
+    const findPostTotal = (gameIDSearch) => {
+        let totalStager = 0;
+        allBets.map((eachBet)=>{
+            if(eachBet.gameID == gameIDSearch) totalStager = totalStager + 1;
+        })
+        return totalStager;
+    }
 
     return (
         <Grid container sx={customStyles.gameContainer}>
@@ -91,7 +100,7 @@ export default function NFLgame(props) {
 
                     <Grid item xs={12}>
                         <Button onClick={()=>handleGameClick()} sx={customStyles.seePostStyle}>
-                            0 POSTS
+                            {findPostTotal(game)} POSTS
                         </Button>
                     </Grid>
                 </Grid>

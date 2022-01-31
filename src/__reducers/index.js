@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import allGameBetsReducer from './getAllGameBets';
 import nbaGamesReducer from './getNBAgames';
 import nflGamesReducer from './getNFLgames';
 import postDataReducer from './getPostData';
@@ -10,7 +11,8 @@ const allReducers = combineReducers({
     userInfo: userDataReducer,
     allNBA : nbaGamesReducer,
     allNFL : nflGamesReducer,
-    postData: postDataReducer
+    postData: postDataReducer,
+    allGameBets: allGameBetsReducer
 });
 
 export default allReducers;
