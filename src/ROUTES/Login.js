@@ -101,7 +101,6 @@ export default function Login(props) {
                       <Grid item xs={12} sx={customStyles.titleStyle}>
                         <TextField
                             fullWidth
-                            secureTextEntry={true}
                             id="outlined-name"
                             label="Password"
                             value={typedPassword}

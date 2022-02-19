@@ -7,6 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { gather_game_bets } from '../__actions/gatherAllGameBets';
+import { set_user } from '../__actions/loginActions';
 import { Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 
@@ -90,7 +91,7 @@ export default function NewPost(props){
       }
       else{
           const currentSport = (gameInfo.gameID).slice(0,3)
-          let stager = {
+          let stagerGameBet = {
             'gameID': gameInfo.gameID,
             'gameStart' : gameInfo.gameStartDate,
             'riskCoins': riskCapCoins,
@@ -101,20 +102,26 @@ export default function NewPost(props){
             'projectedWinner' : projectedWinner,
             'gainCoins' : gainCapCoins
           }
+          let newCoinTotal = currentUser.capCoins - riskCapCoins;
+
         //   let config = { //AXIOS CONFIG SETTINGS
         //     method: 'post',
         //     url: "http://localhost:5000/bets/newGameBet",
         //     headers: { 'Content-Type': 'application/json' },
         //     data: stager
         // };
-        axios.post('http://localhost:9000/bets/newGameBet', stager)
+        axios.post('http://localhost:9000/bets/newGameBet', {betData: stagerGameBet, userAccount: currentUser.username, newCapCoins: newCoinTotal})
           .then(function (response) {
-            //console.log(response.data.message);
+            console.log(response.data.message);
             if(response.data.message == 'created_new_post'){
-              //update client with new bet
-              let stagerBets = allGameBets;
-              stagerBets.push(stager);
-              dispatch(gather_game_bets(stagerBets)) // REDUX LOCAL UPDATE
+              let stagerBets = allGameBets; //update client with new bet
+              stagerBets.push(stagerGameBet);
+              //******** */
+              let stagerUser = currentUser; //update users new cap coins total
+              stagerUser.capCoins = newCoinTotal
+              // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+              dispatch(gather_game_bets(stagerBets)) // REDUX LOCAL UPDATES
+              dispatch(set_user(stagerUser));
               navigate('/Games')
             }
           })
