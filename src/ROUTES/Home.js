@@ -49,10 +49,17 @@ export default function Home() {
 
     const handleButtonPress = (routePath) => {
         switch(routePath){
-            case 'Factboard':
-                navigate('/FactsBoard')
+            case 'Facts':
+                navigate('/Facts')
+                break;
+            case 'Games':
+                navigate('/Games')
+                break;
             case 'Login':
                 navigate('/Login')
+                break;
+            default:
+                break;
         }
     }
 
@@ -72,7 +79,7 @@ export default function Home() {
                 <b style={{ fontSize: '20px', fontFamily: "'Anton', sans-serif", fontWeight: '500' }}>
                     CAP
                 </b>
-                &nbsp;lets you state your opinion, while letting friends challenge you. Record personal challenges, sports predictions, societal reactions and anything you can think of! Just find the opposition and start making money.
+                &nbsp;lets you state your opinion, while letting friends challenge you. Record personal challenges, sports predictions, societal reactions and anything you can think of! Just find the opposition and start speaking your facts
             </Grid>
             <Grid item xs={12} sx={customStyles.bodyStyle}>
                 <Grid container>
@@ -88,12 +95,12 @@ export default function Home() {
                         }
                     </Grid>
                     <Grid item xs={12} sx={customStyles.buttonContainer}>
-                        <Button onClick={()=>handleButtonPress('Factboard')} sx={customStyles.buttonStyle}>
+                        <Button onClick={()=>handleButtonPress('Facts')} sx={customStyles.buttonStyle}>
                             Facts Posted
                         </Button>
                     </Grid>
                     <Grid item xs={12} sx={customStyles.buttonContainer}>
-                        <Button sx={customStyles.buttonStyle}>
+                        <Button onClick={()=>handleButtonPress('Games')} sx={customStyles.buttonStyle}>
                             Today's Games
                         </Button>
                     </Grid>

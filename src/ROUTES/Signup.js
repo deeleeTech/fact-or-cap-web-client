@@ -74,7 +74,7 @@ export default function Signup(props) {
         else{
             let config = { //AXIOS CONFIG SETTINGS
                 method: 'post',
-                url: "http://localhost:5000/users/signup",
+                url: "http://localhost:9000/users/signup",
                 headers: { 'Content-Type': 'application/json' },
                 data: {
                   usernameAttempt: typedUsername,

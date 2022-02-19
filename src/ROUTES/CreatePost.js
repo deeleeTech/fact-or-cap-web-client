@@ -79,7 +79,7 @@ export default function CreatePost(props){
           <Grid item xs={12} sx={{ paddingTop: '15px' }}>
             <Grid container>
                 {allBetsData.map((eachBet)=>{
-                  if(eachBet.gameID == postInfo.gameID){
+                  if(eachBet.gameID == postInfo.gameID && eachBet.usernamePosted != userInfo.username && eachBet.usernameAccepted == 'none'){
                     return(
                       <Grid item xs={12}>
                           <ExistingGameBet betObject={eachBet} />

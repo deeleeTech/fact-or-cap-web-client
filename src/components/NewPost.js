@@ -6,6 +6,7 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
+import { gather_game_bets } from '../__actions/gatherAllGameBets';
 import { Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 
@@ -45,7 +46,9 @@ export default function NewPost(props){
     }
   }
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const currentUser = useSelector(state=>state.userInfo);
+  const allGameBets = useSelector(state=>state.allGameBets);
   const allMenuItems = props.winningOptions;
   const gameInfo = props.gameDetails;
 
@@ -104,11 +107,15 @@ export default function NewPost(props){
         //     headers: { 'Content-Type': 'application/json' },
         //     data: stager
         // };
-        axios.post('http://localhost:5000/bets/newGameBet', stager)
+        axios.post('http://localhost:9000/bets/newGameBet', stager)
           .then(function (response) {
             //console.log(response.data.message);
             if(response.data.message == 'created_new_post'){
-                navigate('/Games')
+              //update client with new bet
+              let stagerBets = allGameBets;
+              stagerBets.push(stager);
+              dispatch(gather_game_bets(stagerBets)) // REDUX LOCAL UPDATE
+              navigate('/Games')
             }
           })
       }

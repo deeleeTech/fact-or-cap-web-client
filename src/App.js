@@ -30,6 +30,7 @@ import {
 } from "react-router-dom";
 import useAuth from './useAuth';
 import './App.css';
+import Parlays from './ROUTES/Parlays';
 
 
 
@@ -45,7 +46,7 @@ export default function App() {
   useEffect(()=>{
     let config = { //AXIOS CONFIG SETTINGS
       method: 'get',
-      url: "http://localhost:5000/games/allNBA", 
+      url: "http://localhost:9000/games/allNBA", 
       headers: { 'Content-Type': 'application/json' }
     };
     Axios( config ).then( res => { // BACKEND REQUEST
@@ -59,7 +60,7 @@ export default function App() {
   useEffect(()=>{
     let config = { //AXIOS CONFIG SETTINGS
       method: 'get',
-      url: "http://localhost:5000/games/allNFL", 
+      url: "http://localhost:9000/games/allNFL", 
       headers: { 'Content-Type': 'application/json' }
     };
     Axios( config ).then( res => { // BACKEND REQUEST
@@ -73,7 +74,7 @@ export default function App() {
   useEffect(()=>{
     let config = { //AXIOS CONFIG SETTINGS
       method: 'get',
-      url: "http://localhost:5000/bets/allBets", 
+      url: "http://localhost:9000/bets/allBets", 
       headers: { 'Content-Type': 'application/json' }
     };
     Axios( config ).then( res => { // BACKEND REQUEST
@@ -93,6 +94,7 @@ export default function App() {
           <Route path="/Home" element={<Home />} />
           <Route path="/Games" element={<Games />} />
           <Route path="/Facts" element={<Facts />} />
+          <Route path="/Parlays" element={<Parlays />} />
 
           <Route path="/Profile" element={<Profile />} />
           <Route path="/Friends" element={<Friends />} />

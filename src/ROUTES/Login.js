@@ -58,7 +58,7 @@ export default function Login(props) {
     const handleLogin = () => {
         let config = { //AXIOS CONFIG SETTINGS
             method: 'get',
-            url: "http://localhost:5000/users/login",
+            url: "http://localhost:9000/users/login",
             headers: { 'Content-Type': 'application/json' },
             params: {
               usernameAttempt: typedUsername,
@@ -79,6 +79,7 @@ export default function Login(props) {
             console.log(err);
         })
     };
+    
 
     return (
         <Grid container sx={customStyles.containerStyle}>
@@ -100,6 +101,7 @@ export default function Login(props) {
                       <Grid item xs={12} sx={customStyles.titleStyle}>
                         <TextField
                             fullWidth
+                            secureTextEntry={true}
                             id="outlined-name"
                             label="Password"
                             value={typedPassword}

@@ -21,7 +21,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import useAuth from '../useAuth'
 
 const pages = ['Home', 'Games', 'Facts', 'Parlays'];
-const settings = ['Profile', 'Friends', 'History', 'Logout'];
+const settings = ['Profile', 'Friends', 'Logout']; //REMOVED HISTORY TEMPORARILY
 
 export default function Navigation(props){
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -55,52 +55,60 @@ export default function Navigation(props){
   }
 
   const handleOpenNavMenu = (event) => {
-    let currentDate = new Date();
-    if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
-      handleLogout(); //LOGOUT
+    if(loginStatus){
+      let currentDate = new Date();
+      if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
+        handleLogout(); //LOGOUT
+      }
+      else{ 
+        let stager = loginData;
+        stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
+        dispatch(set_user(stager)); // RESETS REDUX
+      }
     }
-    else{ 
-      let stager = loginData;
-      stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
-      dispatch(set_user(stager)); // RESETS REDUX
-      setAnchorElNav(event.currentTarget);
-    }
+    setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
-    let currentDate = new Date();
-    if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
-      handleLogout();
+    if(loginStatus){
+      let currentDate = new Date();
+      if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
+        handleLogout(); //LOGOUT
+      }
+      else{ 
+        let stager = loginData;
+        stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
+        dispatch(set_user(stager)); // RESETS REDUX
+      }
     }
-    else{
-      let stager = loginData;
-      stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
-      dispatch(set_user(stager)); // RESETS REDUX
-      setAnchorElUser(event.currentTarget);
-    }
+    setAnchorElUser(event.currentTarget);
   };
   const handleCloseNavMenu = () => {
-    let currentDate = new Date();
-    if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
-      handleLogout();
+    if(loginStatus){
+      let currentDate = new Date();
+      if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
+        handleLogout(); //LOGOUT
+      }
+      else{ 
+        let stager = loginData;
+        stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
+        dispatch(set_user(stager)); // RESETS REDUX
+      }
     }
-    else{
-      let stager = loginData;
-      stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
-      dispatch(set_user(stager)); // RESETS REDUX
-      setAnchorElNav(null);
-    }
+    setAnchorElNav(null);
   };
   const handleCloseUserMenu = () => {
-    let currentDate = new Date();
-    if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
-      handleLogout();
+    if(loginStatus){
+      let currentDate = new Date();
+      if((currentDate.getTime()-loginData.lastLogin) > 900000){ // CHECKS IF CLIENT HAS BEEN IDLE FOR 15 MIN
+        handleLogout(); //LOGOUT
+      }
+      else{ 
+        let stager = loginData;
+        stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
+        dispatch(set_user(stager)); // RESETS REDUX
+      }
     }
-    else{
-      let stager = loginData;
-      stager.lastLogin = currentDate.getTime(); // RESETS LAST TOUCH
-      dispatch(set_user(stager)); // RESETS REDUX
-      setAnchorElUser(null);
-    }
+    setAnchorElUser(null);
   };
 
   function handleLogout(){
@@ -123,7 +131,7 @@ export default function Navigation(props){
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            LOGO
+            
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -184,7 +192,7 @@ export default function Navigation(props){
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={()=>navigate(`./${page}`)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
