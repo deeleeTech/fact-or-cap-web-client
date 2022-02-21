@@ -46,7 +46,7 @@ export default function App() {
   useEffect(()=>{
     let config = { //AXIOS CONFIG SETTINGS
       method: 'get',
-      url: "http://localhost:9000/games/allNBA", 
+      url: "http://localhost:9000/games/allNBA",  //LOCAL http://localhost:9000/games/allNBA
       headers: { 'Content-Type': 'application/json' }
     };
     Axios( config ).then( res => { // BACKEND REQUEST

@@ -91,7 +91,7 @@ export default function NBAgame(props) {
 
                     <Grid item xs={12}>
                         <Button onClick={()=>handleGameClick()} sx={customStyles.seePostStyle}>
-                            0 POSTS
+                            SEE POSTS
                         </Button>
                     </Grid>
                 </Grid>

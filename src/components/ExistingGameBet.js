@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios'
 
 
 export default function CreatePost(props){
@@ -60,8 +61,24 @@ export default function CreatePost(props){
     }
   }
   const navigate = useNavigate();
-
   const thisBet = props.betObject;
+  const userInfo = useSelector(state=>state.userInfo); //USER ACCOUNT INFO
+
+  const handleUserAccept = () => {
+    const newCoinTotal = userInfo.capCoins - thisBet.gainCoins;
+    if(newCoinTotal < 0){
+        alert('not enough cap coins...')
+    }
+    else{
+        axios.post('http://localhost:9000/bets/acceptGameBet', {betID: thisBet._id, acceptingUser: userInfo.username, newCapCoins: newCoinTotal})
+        .then(function (response) {
+        console.log(response.data.message);
+        if(response.data.message == 'user_accepted_post'){
+            navigate('/Games')
+        }
+        })
+    }
+  }
 
   return (
       <Grid container sx={customStyles.container}>
@@ -90,7 +107,7 @@ export default function CreatePost(props){
               Payout
           </Grid>
           <Grid item xs={12} sx={customStyles.callButtonContainer}>
-                <Button sx={customStyles.callButtonStyle}>
+                <Button onClick={()=>handleUserAccept()} sx={customStyles.callButtonStyle}>
                     Accept For {thisBet.gainCoins} CapCoins
                 </Button>
           </Grid>

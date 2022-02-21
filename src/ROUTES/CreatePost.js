@@ -33,10 +33,10 @@ export default function CreatePost(props){
   }
   const navigate = useNavigate();
 
-  const postInfo = useSelector(state=>state.postData);
-  const userInfo = useSelector(state=>state.userInfo);
-  const loggedIn = useSelector(state=>state.loggedInStatus);
-  const allBetsData = useSelector(state=>state.allGameBets)
+  const postInfo = useSelector(state=>state.postData); //GAME DETAILS REQUIRED
+  const userInfo = useSelector(state=>state.userInfo); //USER ACCOUNT INFO
+  const loggedIn = useSelector(state=>state.loggedInStatus); 
+  const allBetsData = useSelector(state=>state.allGameBets); //ARRAY OF ALL GAME BETS
 
   const [ newFlag, setNewFlag ] = useState(false)
 
