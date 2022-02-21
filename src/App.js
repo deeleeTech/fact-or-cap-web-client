@@ -39,7 +39,7 @@ import Parlays from './ROUTES/Parlays';
 export default function App() {
   const propsFade = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } }); //SPRING ANIMATION
   const dispatch = useDispatch();
-  const liveURL = 'https://us-central1-main-server-deeleetech.cloudfunctions.net/app'
+  
 
   const postDataReady = useSelector(state=>state.postData);
 
