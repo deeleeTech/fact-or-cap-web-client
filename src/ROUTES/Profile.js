@@ -50,10 +50,34 @@ export default function Profile(props) {
             color: 'black',
             border: '2px solid black',
             borderRadius: '10px'
+        },
+        'toggleBetStyle' : {
+            width: '100%',
+            padding: '2px',
+            border: '2px solid black',
+            color: 'white',
+            fontSize: '18px'
+        },
+        'untoggledBetStyle' : {
+            width: '100%',
+            padding: '2px',
+            backgroundColor: 'rgba(255,255,255,.9)',
+            color: 'white',
+            fontSize: '18px',
+            textShadow: '1px 0px 10px black'
         }
     }
 
     const userData = useSelector(state=>state.userInfo)
+
+    const [ userBetsData, setUserBetsData ] = useState(null);
+    const [ betType, setBetType ] = useState('facts');
+
+    useEffect(()=>{
+        if(userData.betsData.length > 0){
+            setUserBetsData(userData.betsData)
+        }
+    },[])
 
     return (
         <Grid container sx={{ paddingTop: '70px'}}>
@@ -90,6 +114,54 @@ export default function Profile(props) {
                         </Grid>
                     </Grid>
                 </Grid>
+            </Grid>
+
+            <Grid item xs={12} sx={{ paddingTop: '20px' }}>
+                <Grid container sx={customStyles.activeContainer}>
+                    <Grid item xs={12}>
+                        <Grid container>
+                            <Grid item xs={6}>
+                               <Button onClick={()=>setBetType('facts')} sx={betType == 'facts' ? customStyles.toggleBetStyle : customStyles.untoggledBetStyle}>
+                                   My Facts
+                               </Button>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Button onClick={()=>setBetType('caps')}  sx={betType == 'caps' ? customStyles.toggleBetStyle : customStyles.untoggledBetStyle}>
+                                   My Caps
+                               </Button>
+                            </Grid>
+                            <Grid item xs={12} sx={customStyles.activeStyle}>
+                                {userBetsData && userBetsData.map((each)=>{
+                                    if(betType == 'facts' && each.usernamePosted == userData.username){
+                                        return(<UserBetCard cardData={each} cardType={betType} />)
+                                    }
+                                    else if(betType == 'caps' && each.usernameAccepted == userData.username){
+                                        return(<UserBetCard cardData={each} cardType={betType}/>)
+                                    }
+                                })} 
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+        </Grid>
+    )
+}
+
+function UserBetCard(props){
+    const betPayout = parseInt(props.cardData.riskCoins) + parseInt(props.cardData.gainCoins)
+    const betCardType = props.cardType;
+    return(
+        <Grid container sx={{ fontSize: '22px', color: 'black', borderBottom: '1px dotted black', paddingTop: '4px' }}>
+            <Grid item xs={3} sx={{ textAlign: 'left' }}>
+                {props.cardData.gameID}
+            </Grid>
+            <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                {betPayout}
+            </Grid>
+            <Grid item xs={6} sx={{ textAlign: 'right' }}>
+                {betCardType == 'facts' ? props.cardData.usernameAccepted : props.cardData.usernamePosted}
             </Grid>
         </Grid>
     )

@@ -39,6 +39,7 @@ import Parlays from './ROUTES/Parlays';
 export default function App() {
   const propsFade = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } }); //SPRING ANIMATION
   const dispatch = useDispatch();
+  const liveURL = 'https://us-central1-main-server-deeleetech.cloudfunctions.net/app'
 
   const postDataReady = useSelector(state=>state.postData);
 
@@ -79,7 +80,9 @@ export default function App() {
     };
     Axios( config ).then( res => { // BACKEND REQUEST
       let gameBetsData = res.data.betData;
-      dispatch(gather_game_bets(gameBetsData))
+      if(res.data.message != 'no_bets_found'){
+        dispatch(gather_game_bets(gameBetsData))
+      }
     }).catch( err => {
       console.log(err);
     })
@@ -96,7 +99,14 @@ export default function App() {
           <Route path="/Facts" element={<Facts />} />
           <Route path="/Parlays" element={<Parlays />} />
 
-          <Route path="/Profile" element={<Profile />} />
+          <Route
+              path="/Profile"
+              element={
+                <RequireAuth>
+                  <Profile /> 
+                </RequireAuth>
+              }
+            />
           <Route path="/Friends" element={<Friends />} />
           <Route path="/History" element={<History />} />
 

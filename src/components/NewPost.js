@@ -114,11 +114,13 @@ export default function NewPost(props){
           .then(function (response) {
             console.log(response.data.message);
             if(response.data.message == 'created_new_post'){
-              let stagerBets = allGameBets; //update client with new bet
+              let stagerBets = []; //update client with new bet
+              if(allGameBets) stagerBets = allGameBets;
               stagerBets.push(stagerGameBet);
               //******** */
               let stagerUser = currentUser; //update users new cap coins total
               stagerUser.capCoins = newCoinTotal
+              stagerUser.betsData.push(stagerGameBet)
               // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
               dispatch(gather_game_bets(stagerBets)) // REDUX LOCAL UPDATES
               dispatch(set_user(stagerUser));
