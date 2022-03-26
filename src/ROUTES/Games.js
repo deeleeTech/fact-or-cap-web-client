@@ -57,7 +57,7 @@ export default function Games(props) {
         const gameMonth = gameDateObject.getMonth();
         const gameDateDay = gameDateObject.getDate();
         const gameYear = gameDateObject.getFullYear();
-        if(toggledDate.getDate() == gameDateDay && toggledDate.getMonth() == gameMonth && toggledDate.getFullYear() == gameYear){
+        if(toggledDate.getDate()-1 == gameDateDay && toggledDate.getMonth() == gameMonth && toggledDate.getFullYear() == gameYear){
             return true // GAMES DATE = =TOGGLED DATE !!!!
         }
         else{
@@ -66,12 +66,13 @@ export default function Games(props) {
     }
 
     const filterGamesSport = (fullGameID) => {  //FILTER FLAG FOR GAME ID TO MATCH WITH toggleButton AKA Sport
+        if(!fullGameID) return false
         const sport = fullGameID.slice(0,3);
         if(sport == toggledButton){
             return true;
         }
         else{
-            return false;
+            return true;
         }
     }
 
@@ -85,6 +86,12 @@ export default function Games(props) {
             newDate.setDate(newDate.getDate() - 1)
         }
         setToggledDate(newDate)
+    }
+
+    const formatTime = (timeString) => {
+        let timeHours = timeString.slice(0,2);
+        let timeMinute = timeString.slice(3,5);
+        
     }
     
 
@@ -108,26 +115,26 @@ export default function Games(props) {
             <Grid item xs={12}>
                 <Grid container sx={{ paddingTop: '8px', paddingBottom: '8px', fontSize: '20px' }}>
                     <Grid item xs={4} onClick={()=>setToggledButton('NBA')} sx={toggledButton == 'NBA' ? customStyles.toggledButtonStyle : {}}>NBA</Grid>
-                    <Grid item xs={4} onClick={()=>setToggledButton('NFL')} sx={toggledButton == 'NFL' ? customStyles.toggledButtonStyle : {}}>NFL</Grid>
-                    <Grid item xs={4} onClick={()=>setToggledButton('MLB')} sx={toggledButton == 'MLB' ? customStyles.toggledButtonStyle : {}}>MLB</Grid>
+                    <Grid item xs={4} onClick={()=>setToggledButton('NBA')} sx={toggledButton == 'NFL' ? customStyles.toggledButtonStyle : {}}>NFL</Grid>
+                    <Grid item xs={4} onClick={()=>setToggledButton('NBA')} sx={toggledButton == 'MLB' ? customStyles.toggledButtonStyle : {}}>MLB</Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12}>
-                {allGames ? allGames.map((eachGame)=>{
+                {allGames ? allGames.map((eachGame, index)=>{
                     if(filterGamesDate(eachGame.gameStartDate) && filterGamesSport(eachGame.gameID)){
                         if(toggledButton == 'NBA'){
                             return(
-                                <NBAgame gameObject={eachGame} />
+                                <NBAgame key={index} gameObject={eachGame} />
                             )
                         }
                         if(toggledButton == 'NFL'){
                             return(
-                                <NFLgame gameObject={eachGame} />
+                                <NFLgame key={index} gameObject={eachGame} />
                             )
                         }
                         if(toggledButton == 'MLB'){
                             return(
-                                <MLBgame gameObject={eachGame} />
+                                <MLBgame key={index} gameObject={eachGame} />
                             )
                         }
                     }

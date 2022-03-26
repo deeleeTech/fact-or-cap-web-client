@@ -40,7 +40,6 @@ export default function CreatePost(props){
 
   const [ newFlag, setNewFlag ] = useState(false)
 
-
   useEffect(()=>{ //required data check
     if(postInfo == null || loggedIn == false){
       navigate('/Upcoming')
@@ -78,10 +77,10 @@ export default function CreatePost(props){
           : 
           <Grid item xs={12} sx={{ paddingTop: '15px' }}>
             <Grid container>
-                {allBetsData && allBetsData.map((eachBet)=>{
-                  if(eachBet.gameID == postInfo.gameID && eachBet.usernamePosted != userInfo.username && eachBet.usernameAccepted == 'none'){
+                {allBetsData.map((eachBet, index)=>{
+                  if(eachBet.gameID == postInfo._id && eachBet.usernamePosted != userInfo.username && eachBet.usernameAccepted == 'none'){
                     return(
-                      <Grid item xs={12}>
+                      <Grid item xs={12} key={index} >
                           <ExistingGameBet betObject={eachBet} />
                       </Grid>
                     ) 

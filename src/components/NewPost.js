@@ -5,9 +5,11 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useNavigate } from "react-router-dom";
+// REDUX --------
 import { useSelector, useDispatch } from 'react-redux';
 import { gather_game_bets } from '../__actions/gatherAllGameBets';
 import { set_user } from '../__actions/loginActions';
+import { gather_NBA_games } from '../__actions/gatherAllGames';
 import { Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 
@@ -50,6 +52,7 @@ export default function NewPost(props){
   const dispatch = useDispatch();
   const currentUser = useSelector(state=>state.userInfo);
   const allGameBets = useSelector(state=>state.allGameBets);
+  const allGames = useSelector(state=>state.allNBA);
   const allMenuItems = props.winningOptions;
   const gameInfo = props.gameDetails;
 
@@ -92,7 +95,7 @@ export default function NewPost(props){
       else{
           const currentSport = (gameInfo.gameID).slice(0,3)
           let stagerGameBet = {
-            'gameID': gameInfo.gameID,
+            'gameID': gameInfo._id,
             'gameStart' : gameInfo.gameStartDate,
             'riskCoins': riskCapCoins,
             'usernameAccepted': 'none',
@@ -110,20 +113,26 @@ export default function NewPost(props){
         //     headers: { 'Content-Type': 'application/json' },
         //     data: stager
         // };
-        axios.post('http://localhost:9000/bets/newGameBet', {betData: stagerGameBet, userAccount: currentUser.username, newCapCoins: newCoinTotal})
+        axios.post('https://us-central1-main-server-deeleetech.cloudfunctions.net/app/newGameBet', {betData: stagerGameBet, userAccount: currentUser.username, newCapCoins: newCoinTotal})
           .then(function (response) {
             console.log(response.data.message);
             if(response.data.message == 'created_new_post'){
-              let stagerBets = []; //update client with new bet
-              if(allGameBets) stagerBets = allGameBets;
+              let stagerBets = allGameBets; //update client with new bet
               stagerBets.push(stagerGameBet);
               //******** */
               let stagerUser = currentUser; //update users new cap coins total
               stagerUser.capCoins = newCoinTotal
-              stagerUser.betsData.push(stagerGameBet)
+               //******** */
+               let stagerGames = [...allGames]; //update individual game's betCount
+               stagerGames.map((each)=>{
+                 if(each._id == stagerGameBet.gameID){
+                   each.betCount += 1
+                 }
+               })
               // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-              dispatch(gather_game_bets(stagerBets)) // REDUX LOCAL UPDATES
+              dispatch(gather_game_bets(stagerBets)); // REDUX LOCAL UPDATES
               dispatch(set_user(stagerUser));
+              dispatch(gather_NBA_games(stagerGames));
               navigate('/Games')
             }
           })

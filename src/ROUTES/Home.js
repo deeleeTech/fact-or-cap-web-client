@@ -79,7 +79,7 @@ export default function Home() {
                 <b style={{ fontSize: '20px', fontFamily: "'Anton', sans-serif", fontWeight: '500' }}>
                     CAP
                 </b>
-                &nbsp;lets you state your opinion, while letting friends challenge you. Record personal challenges, sports predictions, societal reactions and anything you can think of! Just find the opposition and start speaking your facts
+                &nbsp;lets you state your opinion, while letting friends challenge you. View nightly scores and make sports predictions with odds made anyway you believe! Just find the opposition and start speaking your facts
             </Grid>
             <Grid item xs={12} sx={customStyles.bodyStyle}>
                 <Grid container>

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
-import { Button } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import { useNavigate } from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -41,7 +47,8 @@ export default function Profile(props) {
             fontSize: '96px',
             color: 'white',
             padding: '4px',
-            fontWeight: '700'
+            fontWeight: '700',
+            paddingBottom: '20px'
         },
         'gamesButtonStyle': {
             backgroundColor: 'rgba(255,255,255,0.6)',
@@ -50,34 +57,11 @@ export default function Profile(props) {
             color: 'black',
             border: '2px solid black',
             borderRadius: '10px'
-        },
-        'toggleBetStyle' : {
-            width: '100%',
-            padding: '2px',
-            border: '2px solid black',
-            color: 'white',
-            fontSize: '18px'
-        },
-        'untoggledBetStyle' : {
-            width: '100%',
-            padding: '2px',
-            backgroundColor: 'rgba(255,255,255,.9)',
-            color: 'white',
-            fontSize: '18px',
-            textShadow: '1px 0px 10px black'
         }
     }
 
     const userData = useSelector(state=>state.userInfo)
-
-    const [ userBetsData, setUserBetsData ] = useState(null);
-    const [ betType, setBetType ] = useState('facts');
-
-    useEffect(()=>{
-        if(userData.betsData.length > 0){
-            setUserBetsData(userData.betsData)
-        }
-    },[])
+    const rows = userData.betsData
 
     return (
         <Grid container sx={{ paddingTop: '70px'}}>
@@ -113,55 +97,34 @@ export default function Profile(props) {
                             </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-            </Grid>
-
-            <Grid item xs={12} sx={{ paddingTop: '20px' }}>
-                <Grid container sx={customStyles.activeContainer}>
                     <Grid item xs={12}>
-                        <Grid container>
-                            <Grid item xs={6}>
-                               <Button onClick={()=>setBetType('facts')} sx={betType == 'facts' ? customStyles.toggleBetStyle : customStyles.untoggledBetStyle}>
-                                   My Facts
-                               </Button>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Button onClick={()=>setBetType('caps')}  sx={betType == 'caps' ? customStyles.toggleBetStyle : customStyles.untoggledBetStyle}>
-                                   My Caps
-                               </Button>
-                            </Grid>
-                            <Grid item xs={12} sx={customStyles.activeStyle}>
-                                {userBetsData && userBetsData.map((each)=>{
-                                    if(betType == 'facts' && each.usernamePosted == userData.username){
-                                        return(<UserBetCard cardData={each} cardType={betType} />)
-                                    }
-                                    else if(betType == 'caps' && each.usernameAccepted == userData.username){
-                                        return(<UserBetCard cardData={each} cardType={betType}/>)
-                                    }
-                                })} 
-                            </Grid>
-                        </Grid>
+                        {/* <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 350 }} aria-label="simple table">
+                                    <TableHead>
+                                    <TableRow>
+                                        <TableCell>Team</TableCell>
+                                        <TableCell align="right">RISK/GAIN</TableCell>
+                                        <TableCell align="right">Cap</TableCell>
+                                    </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                    {rows.map((row, index) => (
+                                        <TableRow
+                                        key={index}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                        <TableCell component="th" scope="row">
+                                            <b>{row.projectedWinner}</b><br/>{new Date(row.gameStart).toDateString()}
+                                        </TableCell>
+                                        <TableCell align="right">{row.riskCoins + "/" + row.gainCoins}</TableCell>
+                                        <TableCell align="right">{row.usernameAccepted}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer> */}
                     </Grid>
                 </Grid>
-            </Grid>
-
-        </Grid>
-    )
-}
-
-function UserBetCard(props){
-    const betPayout = parseInt(props.cardData.riskCoins) + parseInt(props.cardData.gainCoins)
-    const betCardType = props.cardType;
-    return(
-        <Grid container sx={{ fontSize: '22px', color: 'black', borderBottom: '1px dotted black', paddingTop: '4px' }}>
-            <Grid item xs={3} sx={{ textAlign: 'left' }}>
-                {props.cardData.gameID}
-            </Grid>
-            <Grid item xs={3} sx={{ textAlign: 'center' }}>
-                {betPayout}
-            </Grid>
-            <Grid item xs={6} sx={{ textAlign: 'right' }}>
-                {betCardType == 'facts' ? props.cardData.usernameAccepted : props.cardData.usernamePosted}
             </Grid>
         </Grid>
     )

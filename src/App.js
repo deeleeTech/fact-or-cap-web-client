@@ -39,7 +39,7 @@ import Parlays from './ROUTES/Parlays';
 export default function App() {
   const propsFade = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } }); //SPRING ANIMATION
   const dispatch = useDispatch();
-  
+  const liveURL = 'https://us-central1-main-server-deeleetech.cloudfunctions.net/app'
 
   const postDataReady = useSelector(state=>state.postData);
 
@@ -47,7 +47,7 @@ export default function App() {
   useEffect(()=>{
     let config = { //AXIOS CONFIG SETTINGS
       method: 'get',
-      url: "http://localhost:9000/games/allNBA",  //LOCAL http://localhost:9000/games/allNBA
+      url: "https://us-central1-main-server-deeleetech.cloudfunctions.net/app/allNBAGames",  //LOCAL http://localhost:9000/games/allNBA
       headers: { 'Content-Type': 'application/json' }
     };
     Axios( config ).then( res => { // BACKEND REQUEST
@@ -61,7 +61,7 @@ export default function App() {
   useEffect(()=>{
     let config = { //AXIOS CONFIG SETTINGS
       method: 'get',
-      url: "http://localhost:9000/games/allNFL", 
+      url: "https://us-central1-main-server-deeleetech.cloudfunctions.net/app/allNFL", 
       headers: { 'Content-Type': 'application/json' }
     };
     Axios( config ).then( res => { // BACKEND REQUEST
@@ -75,7 +75,7 @@ export default function App() {
   useEffect(()=>{
     let config = { //AXIOS CONFIG SETTINGS
       method: 'get',
-      url: "http://localhost:9000/bets/allBets", 
+      url: "https://us-central1-main-server-deeleetech.cloudfunctions.net/app/allBets", 
       headers: { 'Content-Type': 'application/json' }
     };
     Axios( config ).then( res => { // BACKEND REQUEST

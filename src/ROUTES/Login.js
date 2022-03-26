@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import useAuth from '../useAuth'
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { Alert, Button, TextField } from '@mui/material';
+import { Alert, Button, Input, TextField } from '@mui/material';
 import Axios from 'axios'
 
 
@@ -29,8 +29,13 @@ export default function Login(props) {
         },
         'titleStyle': {
             fontSize: '20px',
-            fontWeight: '700',
-            padding: '10px'
+            fontWeight: '600',
+            padding: '12px',
+            textAlign: 'left'
+        },
+        'inputStyle': {
+            fontSize: '20px',
+            padding: '4px'
         },
         'buttonStyle': {
             fontWeight: '600',
@@ -58,11 +63,10 @@ export default function Login(props) {
     const handleLogin = () => {
         let config = { //AXIOS CONFIG SETTINGS
             method: 'get',
-            url: "http://localhost:9000/users/login",
-            headers: { 'Content-Type': 'application/json' },
+            url: "https://us-central1-main-server-deeleetech.cloudfunctions.net/app/login",
+            headers: { 'Content-Type': 'application/json', 'Authorization': typedPassword },
             params: {
-              usernameAttempt: typedUsername,
-              passwordAttempt: typedPassword
+              usernameAttempt: typedUsername
             }
         };
         Axios( config ).then( res => { // BACKEND REQUEST
@@ -90,18 +94,22 @@ export default function Login(props) {
                             LOGIN
                       </Grid>
                       <Grid item xs={12} sx={customStyles.titleStyle}>
-                        <TextField
+                        Username
+                        <Input
                             fullWidth
-                            id="outlined-name"
+                            id="outlined-username"
                             label="Username"
                             value={typedUsername}
                             onChange={handleUsernameChange}
                             />
                       </Grid>
                       <Grid item xs={12} sx={customStyles.titleStyle}>
-                        <TextField
+                        Password
+                        <Input
+                            sx={customStyles.inputStyle}
+                            type='password'
                             fullWidth
-                            id="outlined-name"
+                            id="outlined-password"
                             label="Password"
                             value={typedPassword}
                             onChange={handlePasswordChange}

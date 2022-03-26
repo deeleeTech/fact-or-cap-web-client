@@ -10,17 +10,28 @@ export default function NBAgame(props) {
     
     const customStyles = {
         'gameContainer': {
-           padding: '5px',
-           fontFamily: 'regular'
+           padding: '7px',
+           fontFamily: 'regular',
+           paddingBottom: '10px'
         },
         'gameStyle': {
-            border: '1px solid black',
-            backgroundColor: 'white'
+            border: '2px solid rgba(0,0,0,.5)',
+            backgroundColor: 'rgba(255,255,255,.6)',
+            borderBottomLeftRadius: '10px',
+            borderBottomRightRadius: '10px'
         },
         'gameIDstyle' : {
             backgroundColor: 'black',
             color: 'white',
-            textAlign: 'left'
+            textAlign: 'left',
+            padding: '3px',
+            letterSpacing: '2px'
+        },
+        'gameBetsStyle' : {
+            backgroundColor: 'black',
+            color: 'white',
+            textAlign: 'right',
+            padding: '3px',
         },
         'gameTipStyle' : {
             backgroundColor: 'black',
@@ -28,22 +39,24 @@ export default function NBAgame(props) {
             textAlign: 'right'
         },
         'teamNameStyle' : {
-            fontSize: '22px',
+            fontSize: '26px',
             fontWeight: '600',
             padding: '3px'
         },
-        'scoreStyle' : {
-            fontSize: '44px',
-            fontWeight: '700'
+        'teamScoreStyle' : {
+            fontSize: '30px',
+            fontWeight: '700',
+            textAlign: 'center'
         },
         'seePostStyle': {
-            width: '100%',
-            backgroundColor: 'rgba(0,200,0,.8)',
+            width: '200px',
+            backgroundColor: 'rgba(80,250,80,.5)',
             color: 'black',
             fontSize: '24px',
             fontWeight: '700',
             textShadow: '1px 0px white',
-            borderTop: '2px dotted black'
+            borderTop: '2px dotted black',
+            borderRadius: '20px'
         }
     }
 
@@ -56,44 +69,37 @@ export default function NBAgame(props) {
     const awTeam = props.gameObject.awayTeamName;
     const hmScore = props.gameObject.homeTeamScore;
     const awScore = props.gameObject.awayTeamScore;
-    const tipOffTime = props.gameObject.gameStartTime;
+    const gmStatus = props.gameObject.gameStatus;
+    const gmBets = props.gameObject.betCount;
     //-------------------------------
 
     const handleGameClick = () => {
+        if(gmStatus == 'Final') return
         const postDataStager = props.gameObject;
-        dispatch(gather_post_data(postDataStager)).then(navigate('/CreatePost'))
+        dispatch(gather_post_data(postDataStager))
+        navigate('/CreatePost')
     }
 
 
     return (
         <Grid container sx={customStyles.gameContainer}>
-            <Grid item xs={12} sx={customStyles.gameStyle}>
+            <Grid item xs={12} onClick={()=>handleGameClick()}  sx={customStyles.gameStyle}>
                 <Grid container>
 
-                    <Grid item xs={6} sx={customStyles.gameIDstyle}>{game}</Grid>
-                    <Grid item xs={6} sx={customStyles.gameTipStyle}>{tipOffTime}</Grid>
+                    <Grid item xs={6} sx={customStyles.gameIDstyle}>{gmStatus}</Grid>
+                    <Grid item xs={6} sx={customStyles.gameBetsStyle}>{gmBets} Bet(s)</Grid>
+
 
                     <Grid item xs={12}>
-                        <Grid container>
-                            <Grid item xs={5} sx={customStyles.scoreStyle}>
-                                {awScore}
-                            </Grid>
-                            <Grid item xs={2} sx={ {fontSize: '20px', paddingTop: '10px'} }>AT</Grid>
-                            <Grid item xs={5} sx={customStyles.scoreStyle}>
-                                {hmScore}
-                            </Grid>
+                        <Grid container sx={{ textAlign: 'left' }}>
+                            <Grid item xs={10} sx={customStyles.teamNameStyle}>{hmTeam}</Grid>
+                            <Grid item xs={2} sx={customStyles.teamScoreStyle}>{hmScore}</Grid>
+
+                            <Grid item xs={10} sx={customStyles.teamNameStyle}>{awTeam}</Grid>
+                            <Grid item xs={2} sx={customStyles.teamScoreStyle}>{awScore}</Grid>
                         </Grid>
                     </Grid>
 
-                    <Grid item xs={5} sx={customStyles.teamNameStyle}>{awTeam}</Grid>
-                    <Grid item xs={2}></Grid>
-                    <Grid item xs={5} sx={customStyles.teamNameStyle}>{hmTeam}</Grid>
-
-                    <Grid item xs={12}>
-                        <Button onClick={()=>handleGameClick()} sx={customStyles.seePostStyle}>
-                            SEE POSTS
-                        </Button>
-                    </Grid>
                 </Grid>
             </Grid>
         </Grid>
